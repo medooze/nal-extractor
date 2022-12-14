@@ -1,0 +1,18 @@
+{
+  "name": "h264-frame-parser",
+  "version": "0.0.0",
+  "description": "H264 javascript frame parser",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medooze/h264-frame-parser.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/medooze/h264-frame-parser/issues"
+  },
+  "homepage": "https://github.com/medooze/h264-frame-parser#readme"
+}
