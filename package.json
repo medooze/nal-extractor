@@ -1,13 +1,25 @@
 {
   "name": "h264-frame-parser",
   "version": "0.0.0",
-  "description": "H264 javascript frame parser",
+  "keywords": [
+    "h264",
+    "bitstream",
+    "parser",
+    "metadata",
+    "sync"
+  ],
+  "description": "H.264 bitstream parsing + metadata sync helpers",
+  "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "prepare": "rm -rf dist; tsc",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "dist",
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/medooze/h264-frame-parser.git"
