@@ -1,6 +1,4 @@
 export * from "./JitterBuffer"
 export * from "./NalUnits"
-export * from "./Sei"
-export * from "./SeiMessageTypes"
-export * from "./UserDataUnregistered"
+export * from "./sei/index"
 export * from "./Uuid"

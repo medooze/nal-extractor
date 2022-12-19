@@ -1,4 +1,4 @@
-const seiMessageTypes = {
+const seiMessageTypes = Object.freeze({
 	buffering_period: 0,
 	/** parseable using [[parsePictureTiming]] */
 	pic_timing: 1,
@@ -102,6 +102,6 @@ const seiMessageTypes = {
 	alternative_depth_info: 181,
 	sei_manifest: 200,
 	sei_prefix_indication: 201,
-}
+})
 
 export default seiMessageTypes

@@ -1,5 +1,5 @@
-import BitReader from "./BitReader"
-import { validateSEITrailing } from "./Sei"
+import BitReader from "../BitReader"
+import { validateSEITrailing } from "./Message"
 
 // PICTURE TIMING SEI
 // ------------------
