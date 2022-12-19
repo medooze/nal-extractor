@@ -2,8 +2,10 @@
   "name": "h264-frame-parser",
   "version": "0.0.0",
   "description": "H264 javascript frame parser",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "prepare": "rm -rf dist; tsc",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -14,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/medooze/h264-frame-parser/issues"
   },
-  "homepage": "https://github.com/medooze/h264-frame-parser#readme"
+  "homepage": "https://github.com/medooze/h264-frame-parser#readme",
+  "devDependencies": {
+    "typescript": "^4.9.4"
+  }
 }
