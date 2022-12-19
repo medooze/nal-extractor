@@ -1,24 +1,23 @@
-//@ts-check
 /** This module implements a jitter buffer for 32-bit rolling timestamps */
 
-/** @template T */
-class InnerJitterBuffer {
+class InnerJitterBuffer<T> {
+	lastPts: number
+	queue: [number, T][]
+
 	// TODO: replace with an actual jitterbuffer...
-	constructor(/** @type {number} */ firstPts, /** @type {T} */ firstData, /** @type {number} */ queueSize) {
+	constructor(firstPts: number, firstData: T, queueSize: number) {
 		this.lastPts = firstPts
-		this.queue = /** @type {[Number, T][]} */ ([ [firstPts, firstData] ])
-		this.queueSize = queueSize
+		this.queue = [ [firstPts, firstData] ]
 	}
 
-	insert(/** @type {number} */ pts, /** @type {T} */ data) {
+	insert(pts: number, data: T) {
 		if (((pts - this.lastPts) | 0) <= 0)
 			console.error(`PTS not strictly monotonic: had ${this.lastPts}, got ${pts}`)
 		this.queue.push( [pts, data] )
 		this.lastPts = pts
 	}
 
-	/** @returns {T | undefined} */
-	retrieve(/** @type {number} */ pts) {
+	retrieve(pts: number): T | undefined {
 		while (this.queue.length && ((this.queue[0][0] - pts) | 0) < 0)
 			this.queue.shift()
 		if (this.queue.length && this.queue[0][0] === pts)
@@ -26,15 +25,11 @@ class InnerJitterBuffer {
 	}
 }
 
-/** @template T */
-export default class JitterBuffer {
-	constructor(/** @type {number} */ queueSize, /** @type {number} */ resetThreshold) {
-		this.queue = undefined
-		this.queueSize = queueSize
-		this.resetThreshold = resetThreshold
-	}
+export default class JitterBuffer<T> {
+	private queue?: InnerJitterBuffer<T>
+	constructor(public queueSize: number, public resetThreshold: number) {}
 
-	insert(/** @type {number} */ pts, /** @type {T} */ data) {
+	insert(pts: number, data: T) {
 		if (!this.queue || Math.abs((pts - this.queue.lastPts) | 0) > this.resetThreshold) {
 			// reinitialize the queue
 			if (this.queue) console.warn('reinitializing queue')
@@ -44,8 +39,7 @@ export default class JitterBuffer {
 		}
 	}
 
-	/** @returns {T | undefined} */
-	retrieve(/** @type {number} */ pts) {
+	retrieve(pts: number): T | undefined {
 		return this.queue ? this.queue.retrieve(pts) : undefined
 	}
 }

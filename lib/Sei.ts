@@ -1,27 +1,13 @@
-//@ts-check
-/**
- * This module contains logic to parse NALUs and in particular SEI messages.
- *
- * As an optimization, these functions return subarrays of the input whenever
- * possible, so keep that in mind if you save references to the parsed data.
- */
-
 import BitReader from "./BitReader"
 
-// SEI
-// ---
-
-/**
- * Raw SEI message, as a [type, payload] tuple. See [[seiMessageTypes]].
- * @typedef {[ number, Uint8Array ]} RawSEIMessage
- */
+/** Raw SEI message, as a [type, payload] tuple. See [[seiMessageTypes]]. */
+export type RawSEIMessage = [ number, Uint8Array ]
 
 /**
  * Parse an (already unescaped) SEI RBSP into raw messages.
  * Note: subarrays of rbsp are returned
- * @returns {RawSEIMessage[]}
  */
-export function parseSEI(/** @type {Uint8Array} */ rbsp) {
+export function parseSEI(rbsp: Uint8Array): RawSEIMessage[] {
 	// de-encapsulate SODB from within RBSP. since SEI SODB ends up in a byte-aligned
 	// position and doesn't have zero words, we just need to strip the trailing bits
 	if (rbsp.length === 0)
@@ -31,7 +17,7 @@ export function parseSEI(/** @type {Uint8Array} */ rbsp) {
 	const length = rbsp.length - 1
 
 	// parse SEI messages until left without data
-	const result = /** @type {RawSEIMessage[]} */ ([])
+	const result: RawSEIMessage[] = []
 	let position = 0
 	while (position < length) {
 		// parse payload type
@@ -61,7 +47,7 @@ export function parseSEI(/** @type {Uint8Array} */ rbsp) {
 	return result
 }
 
-function validateSEITrailing(/** @type {BitReader} */ reader) {
+export function validateSEITrailing(reader: BitReader): void {
 	if (!(reader.offset < reader.length))
 		return // already byte aligned, nothing to trim
 	if (!(reader.length - reader.offset < 8))
@@ -69,4 +55,3 @@ function validateSEITrailing(/** @type {BitReader} */ reader) {
 	if (!(reader.read1() && !reader.read(reader.length - reader.offset)))
 		throw TypeError('unexpected alignment trailing bits')
 }
-

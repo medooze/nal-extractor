@@ -1,4 +1,4 @@
-export default seiMessageTypes = {
+const seiMessageTypes = {
 	buffering_period: 0,
 	/** parseable using [[parsePictureTiming]] */
 	pic_timing: 1,
@@ -103,3 +103,5 @@ export default seiMessageTypes = {
 	sei_manifest: 200,
 	sei_prefix_indication: 201,
 }
+
+export default seiMessageTypes

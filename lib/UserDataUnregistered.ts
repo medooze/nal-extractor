@@ -1,7 +1,7 @@
 /**
  * Parse SEI unregistered user data message
  */
-export default function parseUserDataUnregistered(/** @type {Uint8Array} */ seiPayload) {
+export default function parseUserDataUnregistered(seiPayload: Uint8Array) {
 	// parse UUID
 	if (seiPayload.length < 16)
 		throw TypeError('EOF when reading UUID')

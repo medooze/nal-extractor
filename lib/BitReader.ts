@@ -1,25 +1,22 @@
 
 // CAUTION: returned in signed form (for n == 32, result is -1 not 0xFFFFFFFF)
-const mask = (/** @type {number} */ n) => ~((~0) << n)
+const mask = (n: number) => ~((~0) << n)
 
 /** MSB-first bit reader */
 export default class BitReader {
-	constructor(/** @type {Uint8Array} */ data, /** @type {number} */ offset = 0, /** @type {number} */ length = data.length * 8 - offset) {
+	constructor(public data: Uint8Array, public offset = 0, public length = data.length * 8 - offset) {
 		if (!(offset === (offset >>> 0) && length === (length >>> 0) && offset <= length && length <= data.length * 8))
 			throw new TypeError(`invalid offset / length`)
-		this.data = data
-		this.offset = offset
-		this.length = length
 	}
 
-	read1() {
+	read1(): boolean {
 		if (!(this.offset < this.length))
 			throw new Error('unexpected EOF')
 		const offset = this.offset++
 		return Boolean(this.data[offset >>> 3] >> ((~offset) & 0b111))
 	}
 
-	read(/** @type {number} */ nBits) {
+	read(nBits: number): number {
 		if (!(nBits === (nBits >>> 0) && nBits <= 32))
 			throw TypeError(`invalid bit number ${nBits}`)
 		if (!(this.offset + nBits <= this.length))

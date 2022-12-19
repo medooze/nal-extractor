@@ -1,4 +1,5 @@
 import BitReader from "./BitReader"
+import { validateSEITrailing } from "./Sei"
 
 // PICTURE TIMING SEI
 // ------------------
@@ -17,21 +18,19 @@ export const picStruct = {
 
 const picStructNumClockTS = [ 1, 1, 1, 2, 2, 3, 3, 2, 3 ]
 
-/**
- * @typedef {{
- *   CpbDpbDelaysPresentFlag?: boolean,
- *   cpb_removal_delay_length_minus1?: number,
- *   dpb_output_delay_length_minus1?: number,
- *   pic_struct_present_flag?: boolean,
- *   time_offset_length?: number,
- * }} PictureTimingParseOptions
- */
+export interface PictureTimingParseOptions {
+	CpbDpbDelaysPresentFlag?: boolean,
+	cpb_removal_delay_length_minus1?: number,
+	dpb_output_delay_length_minus1?: number,
+	pic_struct_present_flag?: boolean,
+	time_offset_length?: number,
+}
 
 /**
  * Parse SEI picture timing message, given the payload and variables required
  * from the active SPS.
  */
-export function parsePictureTiming(/** @type {Uint8Array} */ seiPayload, /** @type {PictureTimingParseOptions} */ options) {
+export function parsePictureTiming(seiPayload: Uint8Array, options: PictureTimingParseOptions) {
 	const reader = new BitReader(seiPayload)
 	const result = {
 		...(options.CpbDpbDelaysPresentFlag ? {
@@ -59,9 +58,9 @@ export function parsePictureTiming(/** @type {Uint8Array} */ seiPayload, /** @ty
 			discontinuity_flag: reader.read1(),
 			cnt_dropped_flag: reader.read1(),
 			n_frames: reader.read(8),
-			seconds_value: /** @type {number | undefined} */ (undefined),
-			minutes_value: /** @type {number | undefined} */ (undefined),
-			hours_value: /** @type {number | undefined} */ (undefined),
+			seconds_value: undefined as (undefined | number),
+			minutes_value: undefined as (undefined | number),
+			hours_value: undefined as (undefined | number),
 			time_offset: 0,
 		}
 		if (result.full_timestamp_flag) {

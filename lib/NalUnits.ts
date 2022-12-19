@@ -1,4 +1,3 @@
-
 // NAL
 // ---
 
@@ -7,27 +6,25 @@ export const NALU_TYPE_SEI = 6
 /**
  * Parse the first byte of a NALU
  */
-export const parseNALUPrefix = (/** @type {number} */ octet) => ({
+export const parseNALUPrefix = (octet: number) => ({
 	forbidden_zero_bit: octet >> 7,
 	nal_ref_idc: (octet >> 5) & 0b11,
 	nal_unit_type: octet & 0b11111,
 })
 
-/**
- * @typedef {{
- *   forbidden_zero_bit: number,
- *   nal_ref_idc: number,
- *   nal_unit_type: number,
- *   extensions?: Uint8Array,
- *   rbsp: Uint8Array,
- * }} RawNALU
- */
+export interface RawNALU {
+	forbidden_zero_bit: number,
+	nal_ref_idc: number,
+	nal_unit_type: number,
+	extensions?: Uint8Array,
+	rbsp: Uint8Array,
+}
 
 /**
  * Parse outer layer of a NALU
  * Note: subarrays are returned
  */
-export function parseNALU(/** @type {Uint8Array} */ nalu) {
+export function parseNALU(nalu: Uint8Array) {
 	if (nalu.length < 1)
 		throw TypeError('EOF found when reading NALU prefix')
 	const prefix = parseNALUPrefix(nalu[0])
@@ -39,12 +36,12 @@ export function parseNALU(/** @type {Uint8Array} */ nalu) {
 /**
  * Decode the RBSP part of a NALU, by removing `emulation_prevention_three_byte`
  * Note: if passed, `out` is assumed to be large enough to hold result
- * @returns {Uint8Array} same array passed at `out`
+ * @returns same array passed at `out`
  */
 export function decodeRBSP(
-	/** @type {Uint8Array} */ rbsp,
-	/** @type {Uint8Array} */ out = new Uint8Array(rbsp.length),
-) {
+	rbsp: Uint8Array,
+	out = new Uint8Array(rbsp.length),
+): Uint8Array {
 	// FIXME: we could throw on invalid sequences
 	let outPos = 0, inPos = 0, cursor = 2
 	for (; cursor < rbsp.length; cursor++) {
@@ -61,9 +58,8 @@ export function decodeRBSP(
 
 /**
  * Slice the NALUs present in the supplied buffer, assuming it is already byte-aligned
- * @returns {Uint8Array[]}
  */
-export function sliceNALUs(/** @type {Uint8Array} */ stream) {
+export function sliceNALUs(stream: Uint8Array): Uint8Array[] {
 	const result = []
 	let start = 0, pos = 0, searchLength = stream.length - 2
 	while (pos < searchLength) {
