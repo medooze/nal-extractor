@@ -1,4 +1,4 @@
-import BitReader from "./BitReader"
+import BitReader from "./BitReader.js"
 
 // NAL
 // ---

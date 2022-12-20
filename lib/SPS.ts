@@ -1,7 +1,7 @@
 /** Parsing of Sequence Parameter Sets and associated structures */
 
-import BitReader from "./BitReader"
-import { validateRBSPTrailing } from "./NalUnits"
+import BitReader from "./BitReader.js"
+import { validateRBSPTrailing } from "./NalUnits.js"
 
 export function validateSPSId(n: number) {
 	if (n === (n >>> 0) && n < (1 << 5))

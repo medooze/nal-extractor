@@ -1,4 +1,4 @@
-import BitReader from "../BitReader"
+import BitReader from "../BitReader.js"
 
 /** Raw SEI message, as a [type, payload] tuple. See [[seiMessageTypes]]. */
 export type RawSEIMessage = [ number, Uint8Array ]
