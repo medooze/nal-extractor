@@ -14,7 +14,8 @@
   "scripts": {
     "prepare": "rm -rf dist; tsc",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --coverage",
+    "test:watch": "jest --coverage --watch"
   },
   "files": [
     "dist",
@@ -29,7 +30,36 @@
     "url": "https://github.com/medooze/h264-frame-parser/issues"
   },
   "homepage": "https://github.com/medooze/h264-frame-parser#readme",
+  "jest": {
+    "transform": {
+      ".ts": "ts-jest"
+    },
+    "testEnvironment": "node",
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/test/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 65,
+        "functions": 60,
+        "lines": 85,
+        "statements": 85
+      }
+    },
+    "collectCoverageFrom": [
+      "lib/**/*.{js,ts}"
+    ]
+  },
   "devDependencies": {
+    "@types/jest": "^29.2.4",
+    "jest": "^29.3.1",
+    "ts-jest": "^29.0.3",
     "typescript": "^4.9.4"
   }
 }
