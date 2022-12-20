@@ -74,6 +74,7 @@ export default class BitReader {
 		const n = this.readExp()
 		// undo zig-zag encoding
 		if (n < 2) return n
-		return (n + 1) >>> 1 | (-((n + 1) & 1))
+		const r = (n + 1) >>> 1
+		return (n & 1) ? r : -r
 	}
 }
