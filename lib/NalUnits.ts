@@ -1,3 +1,5 @@
+import BitReader from "./BitReader"
+
 // NAL
 // ---
 
@@ -22,7 +24,8 @@ export interface RawNALU {
 
 /**
  * Parse outer layer of a NALU
- * Note: subarrays are returned
+ *
+ * Note: Subarrays are returned. Before further parsing, [[decodeRBSP]] should be used.
  */
 export function parseNALU(nalu: Uint8Array) {
 	if (nalu.length < 1)
@@ -34,7 +37,8 @@ export function parseNALU(nalu: Uint8Array) {
 }
 
 /**
- * Decode the RBSP part of a NALU, by removing `emulation_prevention_three_byte`
+ * Decode (unescape) the RBSP part of a NALU, by removing `emulation_prevention_three_byte`
+ *
  * Note: if passed, `out` is assumed to be large enough to hold result
  * @returns same array passed at `out`
  */
@@ -82,4 +86,14 @@ export function sliceNALUs(stream: Uint8Array): Uint8Array[] {
 		start = pos = pos + 3
 	}
 	return result
+}
+
+/**
+ * validate the trailing bits (and EOF) of an RBSP
+ */
+export function validateRBSPTrailing(reader: BitReader): void {
+	if (!(reader.length - reader.offset <= 8))
+		throw TypeError(`unexpected trailing data found: ${reader.length - reader.offset} bits`)
+	if (!(reader.read1() && !reader.read(reader.length - reader.offset)))
+		throw TypeError('unexpected alignment trailing bits')
 }
