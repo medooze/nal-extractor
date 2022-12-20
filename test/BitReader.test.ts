@@ -1,4 +1,4 @@
-import BitReader from "../lib/BitReader"
+import BitReader from "../lib/BitReader.js"
 
 describe('BitReader', () => {
 	it('basic tests', () => {

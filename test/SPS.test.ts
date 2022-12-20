@@ -1,5 +1,5 @@
-import { decodeRBSP, parseNALU } from "../lib/NalUnits"
-import { parseSPS, SPS } from "../lib/SPS"
+import { decodeRBSP, parseNALU } from "../lib/NalUnits.js"
+import { parseSPS, SPS, validateSPSId } from "../lib/SPS.js"
 
 function fullParseSPS(naluHex: string, expected: SPS) {
 	const data = Buffer.from(naluHex, 'hex')
