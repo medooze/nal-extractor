@@ -14,14 +14,7 @@ export function validateSPSId(n: number) {
 
 export interface SPS {
 	profile_idc: number,
-	constraint_set0_flag: boolean,
-	constraint_set1_flag: boolean,
-	constraint_set2_flag: boolean,
-	constraint_set3_flag: boolean,
-	constraint_set4_flag: boolean,
-	constraint_set5_flag: boolean,
-	/** equal to 0 */
-	reserved_zero_2bits: number,
+	profile_compatibility: number,
 	level_idc: number,
 
 	seq_parameter_set_id: number,
@@ -32,7 +25,7 @@ export interface SPS {
 	bit_depth_luma_minus8?: number,
 	bit_depth_chroma_minus8?: number,
 	qpprime_y_zero_transform_bypass_flag?: boolean,
-	ScalingLists?: ScalingLists,
+	seq_scaling_matrix?: ScalingMatrix,
 
 	log2_max_frame_num_minus4: number,
 	pic_order_cnt_type: number,
@@ -73,26 +66,19 @@ export function parseSPS(rbsp: Uint8Array): SPS {
 	const reader = new BitReader(rbsp)
 
 	const profile_idc = reader.read(8)
-	const constraint_set0_flag = reader.read1()
-	const constraint_set1_flag = reader.read1()
-	const constraint_set2_flag = reader.read1()
-	const constraint_set3_flag = reader.read1()
-	const constraint_set4_flag = reader.read1()
-	const constraint_set5_flag = reader.read1()
-	const reserved_zero_2bits = reader.read(2)
+	const profile_compatibility = reader.read(8)
 	const level_idc = reader.read(8)
 	const seq_parameter_set_id = reader.readExp()
 
-	const extension = ext_format_profile_idcs[profile_idc] ? parseExtended() : undefined
-	function parseExtended() {
+	const extension = ext_format_profile_idcs[profile_idc] ? (() => {
 		const chroma_format_idc = reader.readExp()
 		const separate_colour_plane_flag = chroma_format_idc === 3 ? reader.read1() : undefined
 		const bit_depth_luma_minus8 = reader.readExp()
 		const bit_depth_chroma_minus8 = reader.readExp()
 		const qpprime_y_zero_transform_bypass_flag = reader.read1()
-		const ScalingLists = parseScalingLists(reader, chroma_format_idc !== 3 ? 2 : 6)
-		return { chroma_format_idc, separate_colour_plane_flag, bit_depth_luma_minus8, bit_depth_chroma_minus8, qpprime_y_zero_transform_bypass_flag, ScalingLists }
-	}
+		const seq_scaling_matrix = parseScalingMatrix(reader, chroma_format_idc !== 3 ? 2 : 6)
+		return { chroma_format_idc, separate_colour_plane_flag, bit_depth_luma_minus8, bit_depth_chroma_minus8, qpprime_y_zero_transform_bypass_flag, seq_scaling_matrix }
+	})() : undefined
 
 	const log2_max_frame_num_minus4 = reader.readExp()
 	const pic_order_cnt_type = reader.readExp()
@@ -131,13 +117,7 @@ export function parseSPS(rbsp: Uint8Array): SPS {
 	validateRBSPTrailing(reader)
 	return {
 		profile_idc,
-		constraint_set0_flag,
-		constraint_set1_flag,
-		constraint_set2_flag,
-		constraint_set3_flag,
-		constraint_set4_flag,
-		constraint_set5_flag,
-		reserved_zero_2bits,
+		profile_compatibility,
 		level_idc,
 		seq_parameter_set_id,
 
@@ -177,7 +157,7 @@ function parseScalingList(
 	let useDefaultScalingMatrix = false
 	const result = [...Array(options.sizeOfScalingList)].map((_, i) => {
 		if (nextScale !== 0) {
-			nextScale = (nextScale + reader.readSExp()) & 0xFF
+			nextScale = (lastScale + reader.readSExp()) & 0xFF
 			useDefaultScalingMatrix = (i === 0) && (nextScale === 0)
 		}
 		return (lastScale = (nextScale === 0) ? lastScale : nextScale)
@@ -185,13 +165,13 @@ function parseScalingList(
 	return { coefficients: result, useDefaultScalingMatrix }
 }
 
-export interface ScalingLists {
+export interface ScalingMatrix {
 	ScalingList4x4: (ScalingList | undefined)[]
 	ScalingList8x8: (ScalingList | undefined)[]
 }
 
 // extracted because of common SPS / PPS code
-export function parseScalingLists(reader: BitReader, n8x8: number): ScalingLists | undefined {
+export function parseScalingMatrix(reader: BitReader, n8x8: number): ScalingMatrix | undefined {
 	return reader.read1() ? {
 		ScalingList4x4: [...Array(6)].map(() =>
 			reader.read1() ? parseScalingList(reader, { sizeOfScalingList: 16 }) : undefined),

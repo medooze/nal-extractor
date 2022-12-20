@@ -18,7 +18,7 @@ export default class BitReader {
 		if (!(this.offset < this.length))
 			throw new Error('unexpected EOF')
 		const offset = this.offset++
-		return Boolean(this.data[offset >>> 3] >> ((~offset) & 0b111))
+		return Boolean((this.data[offset >>> 3] >> ((~offset) & 0b111)) & 1)
 	}
 
 	/**
@@ -37,7 +37,7 @@ export default class BitReader {
 		let result = 0
 
 		// take leftover from current byte
-		const bitsLeft = (~(this.offset - 1)) & 0b111
+		const bitsLeft = 8 - (this.offset & 0b111)
 		const toConsume = Math.min(bitsLeft, remaining)
 		remaining -= toConsume
 		result |= ((this.data[pos++] & mask(bitsLeft)) >> (bitsLeft - toConsume)) << remaining

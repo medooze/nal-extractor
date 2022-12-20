@@ -15,13 +15,7 @@ describe('SPS parsing', () => {
 	it('basic tests', () => {
 		fullParseSPS('6764001fad84010c20086100430802184010c200843b502802dd35010101400145d8c04c4b4025', {
 			profile_idc: 0,
-			constraint_set0_flag: false,
-			constraint_set1_flag: false,
-			constraint_set2_flag: false,
-			constraint_set3_flag: false,
-			constraint_set4_flag: false,
-			constraint_set5_flag: false,
-			reserved_zero_2bits: 0,
+			profile_compatibility: 0,
 			level_idc: 173,
 			seq_parameter_set_id: 0,
 			log2_max_frame_num_minus4: 0,
