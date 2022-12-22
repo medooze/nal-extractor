@@ -21,11 +21,11 @@ export interface SPS {
 
 	// for certain profiles
 	chroma_format_idc?: number,
-	separate_colour_plane_flag?: boolean,
+	separate_colour_plane_flag?: boolean | undefined,
 	bit_depth_luma_minus8?: number,
 	bit_depth_chroma_minus8?: number,
 	qpprime_y_zero_transform_bypass_flag?: boolean,
-	seq_scaling_matrix?: ScalingMatrix,
+	seq_scaling_matrix?: ScalingMatrix | undefined,
 
 	log2_max_frame_num_minus4: number,
 	pic_order_cnt_type: number,
