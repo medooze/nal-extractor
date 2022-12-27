@@ -86,7 +86,7 @@ export function parsePPS(rbsp: Uint8Array, options: PPSParseOptions): PPS {
 				slice_group_id: [...Array(reader.readExp() + 1)].map(() =>
 					reader.read( Math.ceil(Math.log2(num_slice_groups_minus1 + 1 )) ))
 			} :
-			(() => { throw Error(`invalid slice_group_map_type ${slice_group_map_type}`) })() // FIXME
+			(() => { throw Error(`invalid slice_group_map_type ${slice_group_map_type}`) })()
 		return { slice_group_map_type, ...exts }
 	})() : undefined
 

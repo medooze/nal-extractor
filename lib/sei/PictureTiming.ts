@@ -1,4 +1,5 @@
 import BitReader from "../BitReader.js"
+import { SPS } from "../SPS.js"
 import { validateSEITrailing } from "./Message.js"
 
 // PICTURE TIMING SEI
@@ -83,4 +84,18 @@ export function parsePictureTiming(seiPayload: Uint8Array, options: PictureTimin
 	}
 	validateSEITrailing(reader)
 	return result
+}
+
+/**
+ * derive parsing options for picture timing SEI messages from the active SPS
+ */
+export function parsePictureTimingOptionsFromSPS(sps: SPS): PictureTimingParseOptions {
+	const hrd = sps.vui_parameters?.nal_hrd_parameters ?? sps.vui_parameters?.vcl_hrd_parameters
+	return {
+		CpbDpbDelaysPresentFlag: Boolean(hrd),
+		cpb_removal_delay_length_minus1: hrd?.cpb_removal_delay_length_minus1 ?? 23,
+		dpb_output_delay_length_minus1: hrd?.dpb_output_delay_length_minus1 ?? 23,
+		time_offset_length: hrd?.time_offset_length ?? 24,
+		pic_struct_present_flag: sps.vui_parameters?.pic_struct_present_flag ?? false,
+	}
 }
