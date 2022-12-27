@@ -1,11 +1,11 @@
-import { decodeRBSP, parseNALU } from "../lib/NalUnits.js"
+import { decodeRBSP, NALUType, parseNALU } from "../lib/NalUnits.js"
 import { parseSPS, SPS, validateSPSId } from "../lib/SPS.js"
 
 function fullParseSPS(naluHex: string, expected: SPS) {
 	const data = Buffer.from(naluHex, 'hex')
 	const nalu = parseNALU(data)
 	expect(nalu.forbidden_zero_bit).toBe(0)
-	expect(nalu.nal_unit_type).toBe(7) // FIXME
+	expect(nalu.nal_unit_type).toBe(NALUType.SPS)
 	// not checking nalu.nal_ref_idc
 	const parsed = parseSPS(decodeRBSP(nalu.rbsp))
 	expect(parsed).toStrictEqual(expected)

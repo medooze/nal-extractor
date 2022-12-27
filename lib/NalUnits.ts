@@ -3,7 +3,53 @@ import BitReader from "./BitReader.js"
 // NAL
 // ---
 
-export const NALU_TYPE_SEI = 6
+export enum NALUType {
+	/** Coded slice of a non-IDR picture */
+	SLICE_NON_IDR = 1,
+	/** Coded slice data partition A */
+	SLICE_PARTITION_A = 2,
+	/** Coded slice data partition B */
+	SLICE_PARTITION_B = 3,
+	/** Coded slice data partition C */
+	SLICE_PARTITION_C = 4,
+	/** Coded slice of an IDR picture */
+	SLICE_IDR = 5,
+	/** Supplemental enhancement information */
+	SEI = 6,
+	/** Sequence parameter set */
+	SPS = 7,
+	/** Picture parameter set */
+	PPS = 8,
+	/** Access unit delimiter */
+	AUD = 9,
+	/** End of sequence */
+	END_SEQ = 10,
+	/** End of stream */
+	END_STREAM = 11,
+	/** Filler data */
+	FILLER_DATA = 12,
+	/** Sequence parameter set extension */
+	SPS_EXT = 13,
+	/** Prefix NAL unit */
+	PREFIX_NALU = 14,
+	/** Subset sequence parameter set */
+	SUBSET_SPS = 15,
+	/** Depth parameter set */
+	DPS = 16,
+
+	// 17, 18 reserved
+
+	/** Coded slice of an auxiliary coded picture without partitioning */
+	SLICE_AUX = 19,
+	/** Coded slice extension */
+	SLICE_EXT = 20,
+	/** Coded slice extension for a depth view component or a 3D-AVC texture view component */
+	SLICE_LAYER_EXT = 21,
+
+	// 22, 23 reserved
+}
+
+export const NALU_TYPE_UNSPEC_START = 24
 
 /**
  * Parse the first byte of a NALU
