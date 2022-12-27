@@ -13,6 +13,11 @@ export default class BitReader {
 			throw new TypeError(`invalid offset / length`)
 	}
 
+	/** returns a clone of the BitReader that *refers to the same array* */
+	clone(): BitReader {
+		return new BitReader(this.data, this.offset, this.length)
+	}
+
 	/** read a single bit */
 	read1(): boolean {
 		if (!(this.offset < this.length))

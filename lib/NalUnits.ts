@@ -143,3 +143,16 @@ export function validateRBSPTrailing(reader: BitReader): void {
 	if (!(reader.read1() && !reader.read(reader.length - reader.offset)))
 		throw TypeError('unexpected alignment trailing bits')
 }
+
+/**
+ * check if we have reached the end of the SODB (trailing bits follow
+ * immediately) or if there's more data
+ */
+export function moreRBSPData(reader: BitReader): boolean {
+	if (!(reader.length - reader.offset <= 8))
+		return true
+	if (reader.length === reader.offset)
+		return false
+	reader = reader.clone()
+	return !(reader.read1() && !reader.read(reader.length - reader.offset))
+}
