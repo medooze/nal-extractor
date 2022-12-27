@@ -1,7 +1,6 @@
 export { RawSEIMessage, parseSEI } from "./Message.js"
 
-import seiMessageTypes from "./MessageTypes.js"
-export { seiMessageTypes }
+export * from "./MessageType.js"
 
 export * from "./UserDataUnregistered.js"
 export * from "./PictureTiming.js"

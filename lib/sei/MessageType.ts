@@ -1,0 +1,105 @@
+export enum SEIMessageType {
+	BUFFERING_PERIOD = 0,
+	/** parseable using [[parsePictureTiming]] */
+	PIC_TIMING = 1,
+	PAN_SCAN_RECT = 2,
+	FILLER_PAYLOAD = 3,
+	USER_DATA_REGISTERED_ITU_T_T35 = 4,
+	/** parseable using [[parseUserDataUnregistered]] */
+	USER_DATA_UNREGISTERED = 5,
+	RECOVERY_POINT = 6,
+	DEC_REF_PIC_MARKING_REPETITION = 7,
+	SPARE_PIC = 8,
+	SCENE_INFO = 9,
+	SUB_SEQ_INFO = 10,
+	SUB_SEQ_LAYER_CHARACTERISTICS = 11,
+	SUB_SEQ_CHARACTERISTICS = 12,
+	FULL_FRAME_FREEZE = 13,
+	FULL_FRAME_FREEZE_RELEASE = 14,
+	FULL_FRAME_SNAPSHOT = 15,
+	PROGRESSIVE_REFINEMENT_SEGMENT_START = 16,
+	PROGRESSIVE_REFINEMENT_SEGMENT_END = 17,
+	MOTION_CONSTRAINED_SLICE_GROUP_SET = 18,
+	FILM_GRAIN_CHARACTERISTICS = 19,
+	DEBLOCKING_FILTER_DISPLAY_PREFERENCE = 20,
+	STEREO_VIDEO_INFO = 21,
+	POST_FILTER_HINT = 22,
+	TONE_MAPPING_INFO = 23,
+	/** specified in Annex G */
+	SCALABILITY_INFO = 24,
+	/** specified in Annex G */
+	SUB_PIC_SCALABLE_LAYER = 25,
+	/** specified in Annex G */
+	NON_REQUIRED_LAYER_REP = 26,
+	/** specified in Annex G */
+	PRIORITY_LAYER_INFO = 27,
+	/** specified in Annex G */
+	LAYERS_NOT_PRESENT = 28,
+	/** specified in Annex G */
+	LAYER_DEPENDENCY_CHANGE = 29,
+	/** specified in Annex G */
+	SCALABLE_NESTING = 30,
+	/** specified in Annex G */
+	BASE_LAYER_TEMPORAL_HRD = 31,
+	/** specified in Annex G */
+	QUALITY_LAYER_INTEGRITY_CHECK = 32,
+	/** specified in Annex G */
+	REDUNDANT_PIC_PROPERTY = 33,
+	/** specified in Annex G */
+	TL0_DEP_REP_INDEX = 34,
+	/** specified in Annex G */
+	TL_SWITCHING_POINT = 35,
+	/** specified in Annex H */
+	PARALLEL_DECODING_INFO = 36,
+	/** specified in Annex H */
+	MVC_SCALABLE_NESTING = 37,
+	/** specified in Annex H */
+	VIEW_SCALABILITY_INFO = 38,
+	/** specified in Annex H */
+	MULTIVIEW_SCENE_INFO = 39,
+	/** specified in Annex H */
+	MULTIVIEW_ACQUISITION_INFO = 40,
+	/** specified in Annex H */
+	NON_REQUIRED_VIEW_COMPONENT = 41,
+	/** specified in Annex H */
+	VIEW_DEPENDENCY_CHANGE = 42,
+	/** specified in Annex H */
+	OPERATION_POINTS_NOT_PRESENT = 43,
+	/** specified in Annex H */
+	BASE_VIEW_TEMPORAL_HRD = 44,
+	FRAME_PACKING_ARRANGEMENT = 45,
+	/** specified in Annex H */
+	MULTIVIEW_VIEW_POSITION = 46,
+	DISPLAY_ORIENTATION = 47,
+	/** specified in Annex I */
+	MVCD_SCALABLE_NESTING = 48,
+	/** specified in Annex I */
+	MVCD_VIEW_SCALABILITY_INFO = 49,
+	/** specified in Annex I */
+	DEPTH_REPRESENTATION_INFO = 50,
+	/** specified in Annex I */
+	THREE_DIMENSIONAL_REFERENCE_DISPLAYS_INFO = 51,
+	/** specified in Annex I */
+	DEPTH_TIMING = 52,
+	/** specified in Annex I */
+	DEPTH_SAMPLING_INFO = 53,
+	/** specified in Annex J */
+	CONSTRAINED_DEPTH_PARAMETER_SET_IDENTIFIER = 54,
+	/** specified in ISO/IEC 23001-11 */
+	GREEN_METADATA = 56,
+	MASTERING_DISPLAY_COLOUR_VOLUME = 137,
+	COLOUR_REMAPPING_INFO = 142,
+	CONTENT_LIGHT_LEVEL_INFO = 144,
+	ALTERNATIVE_TRANSFER_CHARACTERISTICS = 147,
+	AMBIENT_VIEWING_ENVIRONMENT = 148,
+	CONTENT_COLOUR_VOLUME = 149,
+	EQUIRECTANGULAR_PROJECTION = 150,
+	CUBEMAP_PROJECTION = 151,
+	SPHERE_ROTATION = 154,
+	REGIONWISE_PACKING = 155,
+	OMNI_VIEWPORT = 156,
+	/** specified in Annex I */
+	ALTERNATIVE_DEPTH_INFO = 181,
+	SEI_MANIFEST = 200,
+	SEI_PREFIX_INDICATION = 201,
+}

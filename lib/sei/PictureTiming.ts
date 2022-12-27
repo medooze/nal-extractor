@@ -4,16 +4,16 @@ import { validateSEITrailing } from "./Message.js"
 // PICTURE TIMING SEI
 // ------------------
 
-export const picStruct = {
-	progressive: 0,
-	top: 1,
-	bottom: 2,
-	topBottom: 3,
-	bottomTop: 4,
-	topBottomTop: 5,
-	bottomTopBottom: 6,
-	doubling: 7,
-	tripling: 8,
+export enum PicStruct {
+	PROGRESSIVE = 0,
+	TOP = 1,
+	BOTTOM = 2,
+	TOP_BOTTOM = 3,
+	BOTTOM_TOP = 4,
+	TOP_BOTTOM_TOP = 5,
+	BOTTOM_TOP_BOTTOM = 6,
+	DOUBLING = 7,
+	TRIPLING = 8,
 }
 
 const picStructNumClockTS = [ 1, 1, 1, 2, 2, 3, 3, 2, 3 ]
