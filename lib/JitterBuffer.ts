@@ -5,7 +5,7 @@ class InnerJitterBuffer<T> {
 	queue: [number, T][]
 
 	// TODO: replace with an actual jitterbuffer...
-	constructor(firstPts: number, firstData: T, queueSize: number) {
+	constructor(firstPts: number, firstData: T, _queueSize: number) {
 		this.lastPts = firstPts
 		this.queue = [ [firstPts, firstData] ]
 	}

@@ -1,4 +1,5 @@
-export { RawSEIMessage, parseSEI } from "./Message.js"
+export { parseSEI } from "./Message.js"
+export type { RawSEIMessage } from "./Message.js"
 
 export * from "./MessageType.js"
 

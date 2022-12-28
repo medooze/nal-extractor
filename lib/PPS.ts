@@ -31,7 +31,7 @@ export interface PPS {
 		slice_group_change_rate_minus1?: number,
 		// for type === 6
 		slice_group_id?: number[],
-	},
+	} | undefined,
 
 	num_ref_idx_l0_default_active_minus1: number,
 	num_ref_idx_l1_default_active_minus1: number,
@@ -46,9 +46,9 @@ export interface PPS {
 
 	optionalTrailing?: {
 		transform_8x8_mode_flag: boolean,
-		pic_scaling_matrix?: ScalingMatrix,
+		pic_scaling_matrix?: ScalingMatrix | undefined,
 		second_chroma_qp_index_offset: number,
-	},
+	} | undefined,
 }
 
 export interface PPSParseOptions {
