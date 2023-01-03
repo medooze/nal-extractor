@@ -10,3 +10,5 @@
 
 import JitterBuffer from "./JitterBuffer.js"
 export { JitterBuffer }
+
+export * from "./RtpScriptTransform.js"
