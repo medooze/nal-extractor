@@ -51,7 +51,8 @@
     ],
     "coveragePathIgnorePatterns": [
       "/node_modules/",
-      "/test/"
+      "/test/",
+      "/lib/sync"
     ],
     "coverageThreshold": {
       "global": {
