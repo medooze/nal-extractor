@@ -11,4 +11,10 @@
 import JitterBuffer from "./JitterBuffer.js"
 export { JitterBuffer }
 
+export * from "./JitterBuffer.js"
+
+export * from "./CanvasResolution.js"
+
+export * from "./RequestFrame.js"
+
 export * from "./RtpScriptTransform.js"

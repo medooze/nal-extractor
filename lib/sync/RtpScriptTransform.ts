@@ -24,7 +24,7 @@
  *
  * Basic example:
  *
- * ~~~
+ * ~~~ js
  * // main.js
  *
  * import { attachRtpScriptTransform } from 'h264-frame-parser'
@@ -350,8 +350,8 @@ export function attachMetadataExtractor<O=unknown, Meta=unknown>(
 		ev.stopImmediatePropagation()
 	})
 
-	self.addEventListener('message', onmessage)
-	const cleanup = () => self.removeEventListener('message', onmessage)
+	worker.addEventListener('message', onmessage)
+	const cleanup = () => worker.removeEventListener('message', onmessage)
 
 	let readyResolve: () => void
 	return new Promise<void>((resolve) => readyResolve = resolve)
