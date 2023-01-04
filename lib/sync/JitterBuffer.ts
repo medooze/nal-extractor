@@ -1,4 +1,10 @@
-/** This module implements a jitter buffer for 32-bit rolling timestamps */
+/**
+ * This module implements a jitter buffer for 32-bit rolling timestamps.
+ * It also provides {@link MetadataSync}, which combines it
+ * with {@link sync/RtpScriptTransform} and {@link sync/RequestFrame.startRvfc} for convenience.
+ *
+ * @module
+ */
 
 import { startRvfc } from "./RequestFrame.js"
 import { attachMetadataExtractor, AttachRtpScriptTransformOptions, MessageData, RtpScriptTransformServiceCallback, startMetadataExtractorService } from "./RtpScriptTransform.js"

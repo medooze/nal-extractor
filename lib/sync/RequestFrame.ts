@@ -1,8 +1,8 @@
 /**
- * @module
- *
  * Helpers for `requestVideoFrameCallback` and `requestAnimationFrame` that
  * take care of managing handles and coalescing multiple requests.
+ *
+ * @module
  */
 
 /** manages a rAF request, ensuring no duplicates or missed handles */

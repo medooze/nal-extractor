@@ -1,4 +1,8 @@
-/** Extracts and parses SEI from access units */
+/**
+ * Extracts and parses SEI from access units
+ *
+ * @module
+ */
 
 import { parseNALU, sliceNALUs, NALUType, decodeRBSP } from "../NalUnits.js"
 import SetManager from "../SetManager.js"
