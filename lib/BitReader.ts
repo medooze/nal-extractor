@@ -1,3 +1,8 @@
+/**
+ * Reader aimed mostly at H.264 bit primitives. **Not for external use.**
+ *
+ * @module
+ */
 
 // CAUTION: returned in signed form (for n == 32, result is -1 not 0xFFFFFFFF)
 const mask = (n: number) => ~((~0) << n)
@@ -73,7 +78,7 @@ export default class BitReader {
 	/**
 	 * read an exp-golomb signed integer [se(v)]
 	 *
-	 * same warning as for [[readExp]]
+	 * same warning as for {@link readExp}
 	 */
 	readSExp(): number {
 		const n = this.readExp()

@@ -1,3 +1,9 @@
+/**
+ * Main library entry point; mostly reexports everything else.
+ *
+ * @module
+ */
+
 export { RawNALU, NALUType, NALU_TYPE_UNSPEC_START, sliceNALUs, parseNALU, decodeRBSP } from "./NalUnits.js"
 export { parseSPS, SPS, VUIParameters, HRDParameters } from "./SPS.js"
 export { parsePPS, PPS } from "./PPS.js"

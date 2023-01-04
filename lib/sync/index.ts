@@ -6,6 +6,8 @@
  *
  * This subdirectory hosts said helpers, and more generally everything not strictly
  * dedicated to parsing.
+ *
+ * @module
  */
 
 import JitterBuffer from "./JitterBuffer.js"

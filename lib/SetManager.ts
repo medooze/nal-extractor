@@ -1,4 +1,8 @@
-/** Parses and accumulates received parameter sets, and manages their activation */
+/**
+ * Parses and accumulates received parameter sets, and manages their activation
+ *
+ * @module
+ */
 
 import { parseSPS, SPS, validateSPSId } from "./SPS.js"
 import { parsePPS, PPS, validatePPSId } from "./PPS.js"
@@ -41,7 +45,7 @@ export default class SetManager {
 
 	/**
 	 * Parses and stores the specified SPS, given the *encoded* RBSP.
-	 * You typically want to use [[processNALU]] instead.
+	 * You typically want to use {@link processNALU} instead.
 	 */
 	processSPS(rbsp: Uint8Array): void {
 		const sps = parseSPS(decodeRBSP(rbsp))
@@ -51,7 +55,7 @@ export default class SetManager {
 
 	/**
 	 * Parses and stores the specified SPS, given the *encoded* RBSP.
-	 * You typically want to use [[processNALU]] instead.
+	 * You typically want to use {@link processNALU} instead.
 	 */
 	processPPS(rbsp: Uint8Array): void {
 		const pps = parsePPS(decodeRBSP(rbsp), {

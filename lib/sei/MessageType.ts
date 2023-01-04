@@ -1,11 +1,11 @@
 export enum SEIMessageType {
 	BUFFERING_PERIOD = 0,
-	/** parseable using [[parsePictureTiming]] */
+	/** parseable using {@link sei/PictureTiming.parsePictureTiming} */
 	PIC_TIMING = 1,
 	PAN_SCAN_RECT = 2,
 	FILLER_PAYLOAD = 3,
 	USER_DATA_REGISTERED_ITU_T_T35 = 4,
-	/** parseable using [[parseUserDataUnregistered]] */
+	/** parseable using {@link sei/UserDataUnregistered.parseUserDataUnregistered} */
 	USER_DATA_UNREGISTERED = 5,
 	RECOVERY_POINT = 6,
 	DEC_REF_PIC_MARKING_REPETITION = 7,

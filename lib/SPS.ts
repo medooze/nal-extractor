@@ -1,4 +1,8 @@
-/** Parsing of Sequence Parameter Sets and associated structures */
+/**
+ * Parsing of Sequence Parameter Sets and associated structures
+ *
+ * @module
+ */
 
 import BitReader from "./BitReader.js"
 import { validateRBSPTrailing } from "./NalUnits.js"

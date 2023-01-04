@@ -1,4 +1,8 @@
-/** Parsing of Picture Parameter Sets and associated structures */
+/**
+ * Parsing of Picture Parameter Sets and associated structures
+ *
+ * @module
+ */
 
 import BitReader from "./BitReader.js"
 import { moreRBSPData, validateRBSPTrailing } from "./NalUnits.js"

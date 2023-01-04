@@ -1,6 +1,4 @@
 /**
- * @module
- *
  * Provides a uniform API for both versions of WebRTC Insertable Streams,
  * now officially called WebRTC Encoded Transform.
  *
@@ -16,11 +14,11 @@
  *
  * ## Basic usage
  *
- * The API has two sides; [[attachRtpScriptTransform]] is called from the local
+ * The API has two sides; {@link attachRtpScriptTransform} is called from the local
  * (i.e. non worker) side, and gets passed a Worker object. This worker must have
- * called [[startRtpScriptTransformService]] to receive and handle the created
+ * called {@link startRtpScriptTransformService} to receive and handle the created
  * transformer. It is okay to pass a worker that hasn't yet started up, as
- * long as [[startRtpScriptTransformService]] is called in the initialization.
+ * long as {@link startRtpScriptTransformService} is called in the initialization.
  *
  * Basic example:
  *
@@ -57,7 +55,7 @@
  *
  * ### Considerations
  *
- * Note that [[attachRtpScriptTransform]] is synchronous and doesn't wait for
+ * Note that {@link attachRtpScriptTransform} is synchronous and doesn't wait for
  * acknowledgment from the worker that the transformer has been received and
  * set up. This may happen much later, especially if the worker is busy or
  * still starting up. If you need this, send a message from the worker service
@@ -89,19 +87,21 @@
  *  - sending the results of inspection (user-defined function)
  *    back to the main context
  *
- * These are [[attachMetadataExtractor]] and [[startMetadataExtractorService]].
+ * These are {@link attachMetadataExtractor} and {@link startMetadataExtractorService}.
  *
- * When compared to the base APIs, [[attachMetadataExtractor]] takes an extra
+ * When compared to the base APIs, {@link attachMetadataExtractor} takes an extra
  * argument: a callback to be invoked for every received metadata frame.
- * For [[startMetadataExtractorService]], the callback must return an 'extraction
+ * For {@link startMetadataExtractorService}, the callback must return an 'extraction
  * function' to be invoked for each frame. The extraction function must return the
  * metadata object to send back to the main frame (together with the transfer list,
- * see [[MessageData]]), or `undefined` to send nothing for that frame.
+ * see {@link MessageData}), or `undefined` to send nothing for that frame.
  *
  * Unless adequate wrapping is used, this API should never be mixed with the
  * basic API: a worker must not start both worker services at the same time;
- * [[attachMetadataExtractor]] may only be called on a worker that called
- * [[startMetadataExtractorService]], and vice versa.
+ * {@link attachMetadataExtractor} may only be called on a worker that called
+ * {@link startMetadataExtractorService}, and vice versa.
+ *
+ * @module
  */
 
 
@@ -239,7 +239,7 @@ export function attachRtpScriptTransform<O=unknown>(
 export type RtpScriptTransformServiceCallback<O, R = void> = (
 	/** the newly created transformer */
 	transformer: RTCRtpScriptTransformer,
-	/** `options` data supplied to the associated [[attachRtpScriptTransform]] call */
+	/** `options` data supplied to the associated {@link attachRtpScriptTransform} call */
 	options: O,
 	/**
 	 * the raw event that caused receival of the transformer, mostly for debugging purposes.
@@ -303,7 +303,7 @@ type WrappedOptions<O> = { id: number, options: O }
 let nextId = 0
 
 /**
- * Convenience API that builds on top of [[attachRtpScriptTransform]] for
+ * Convenience API that builds on top of {@link attachRtpScriptTransform} for
  * transforms that just need to extract metadata from frames and send it back.
  *
  * @returns Stop / deregister callback, wrapped in a promise that resolves

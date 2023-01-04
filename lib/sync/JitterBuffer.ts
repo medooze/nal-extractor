@@ -28,6 +28,12 @@ class InnerJitterBuffer<T> {
 	}
 }
 
+/**
+ * Very simple jitter buffer.
+ *
+ * Actually not really a jitter buffer, but should be enough to synchronize
+ * from a WebRTC Encoded Stream to presentation.
+ */
 export default class JitterBuffer<T> {
 	private queue?: InnerJitterBuffer<T>
 	constructor(public queueSize: number, public resetThreshold: number) {}
@@ -51,7 +57,7 @@ type WrappedMeta<Meta> = { ts: number, metadata: Meta }
 
 /**
  * Combines a metadata extractor with a jitter buffer with a metadata extractor,
- * and fetches appropriate metadata as frames are rendered in a <video> element.
+ * and fetches appropriate metadata as frames are rendered in a `<video>` element.
  *
  * Most use cases should be able to use this helper instead of the individual parts.
  */
@@ -73,21 +79,21 @@ export abstract class MetadataSync<TMeta, O=unknown, Meta=unknown> {
 
 	/**
 	 * initialize a combined metadata extractor. this builds on top of
-	 * [[attachMetadataExtractor]], see there for usage.
+	 * {@link sync/RtpScriptTransform.attachMetadataExtractor}, see there for usage.
 	 *
-	 * the passed worker must call [[startMetadataSyncService]],
-	 * NOT [[startMetadataExtractorService]].
+	 * the passed worker must call {@link startMetadataSyncService},
+	 * NOT {@link sync/RtpScriptTransform.startMetadataExtractorService}.
 	 */
 	constructor(
 		/** negotiated clock rate for the video media (used to derive jitterbuffer parameters) */
 		clockRate: number,
-		/** <video> element playing the video received by `receiver` */
+		/** `<video>` element playing the video received by `receiver` */
 		video: HTMLVideoElement,
 		/** RTP receiver handing the played video */
 		receiver: RTCRtpReceiver,
-		/** see [[attachMetadataExtractor]] */
+		/** see {@link sync/RtpScriptTransform.attachMetadataExtractor} */
 		worker: Worker,
-		/** see [[attachMetadataExtractor]] */
+		/** see {@link sync/RtpScriptTransform.attachMetadataExtractor} */
 		meOptions: AttachRtpScriptTransformOptions<O> = {},
 		/** our options */
 		options: {
@@ -110,10 +116,10 @@ export abstract class MetadataSync<TMeta, O=unknown, Meta=unknown> {
 	protected queue: JitterBuffer<Meta>
 
 	/**
-	 * called by [[requestVideoFrameCallback]] when the video element presents a new frame.
+	 * called by `requestVideoFrameCallback` when the video element presents a new frame.
 	 *
 	 * the default implementation looks up the new `metadata` from the jitter buffer,
-	 * transforms it with [[transformMetadata]] and updates `metadata`.
+	 * transforms it with {@link transformMetadata} and updates `metadata`.
 	 *
 	 * this method can be overriden to gather stats.
 	 */
@@ -134,11 +140,11 @@ export abstract class MetadataSync<TMeta, O=unknown, Meta=unknown> {
 	abstract transformMetadata(metadata: Meta, timestamp: number): TMeta
 }
 
-/** variant of [[startMetadataExtractorService]] to be paired with [[MetadataSync]] */
+/** variant of {@link sync/RtpScriptTransform.startMetadataExtractorService} to be paired with {@link MetadataSync} */
 export function startMetadataSyncService<O=unknown, Meta=unknown>(
-	/** see [[startMetadataExtractorService]] */
+	/** see {@link sync/RtpScriptTransform.startMetadataExtractorService} */
 	callback: RtpScriptTransformServiceCallback<O, (frame: RTCEncodedVideoFrame) => (MessageData<Meta> | undefined)>,
-	/** see [[startMetadataExtractorService]] */
+	/** see {@link sync/RtpScriptTransform.startMetadataExtractorService} */
 	options: Parameters<typeof startMetadataExtractorService<O, Meta>>[1] = {},
 ): () => void {
 	return startMetadataExtractorService<O, WrappedMeta<Meta>>((...args) => {

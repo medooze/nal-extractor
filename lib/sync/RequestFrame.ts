@@ -1,7 +1,7 @@
 /**
  * @module
  *
- * Helpers for [[requestVideoFrameCallback]] and [[requestAnimationFrame]] that
+ * Helpers for `requestVideoFrameCallback` and `requestAnimationFrame` that
  * take care of managing handles and coalescing multiple requests.
  */
 

@@ -1,6 +1,7 @@
 /**
- * @module
  * Helpers to manage the resolution of canvas elements.
+ *
+ * @module
  */
 
 /**
@@ -22,10 +23,10 @@ export function monitorDevicePixelRatio(cb: () => void): () => void {
 }
 
 /**
- * subscribe to changes in the natural resolution of an on-screen element (usually a <canvas>).
+ * subscribe to changes in the natural resolution of an on-screen element (usually a `<canvas>`).
  *
- * put another way, `cb` is called whenever [[getNaturalResolution]] would return a different value.
- * under the hood, this combines [[monitorDevicePixelRatio]] with a [[ResizeObserver]].
+ * put another way, `cb` is called whenever {@link getNaturalResolution} would return a different value.
+ * under the hood, this combines {@link monitorDevicePixelRatio} with a `ResizeObserver`.
  *
  * @returns stop / deregister callback
  */
@@ -37,7 +38,7 @@ export function monitorNaturalResolution(target: Element, cb: () => void): () =>
 }
 
 /**
- * get the natural resolution of an element (usually a <canvas>), i.e. its size in native screen pixels.
+ * get the natural resolution of an element (usually a `<canvas>`), i.e. its size in native screen pixels.
  *
  * under the hood, this combines `clientWidth` / `clientHeight` with `devicePixelRatio`.
  */

@@ -7,3 +7,4 @@ export * from "./PictureTiming.js"
 
 import SEIExtractor from "./Extractor.js"
 export { SEIExtractor }
+export * from "./Extractor.js"

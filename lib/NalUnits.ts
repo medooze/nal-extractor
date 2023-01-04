@@ -1,3 +1,10 @@
+/**
+ * Routines to parse the outer Network Access Layer, starting at the
+ * byte stream format (Annex B) and ending at the containing SODB.
+ *
+ * @module
+ */
+
 import BitReader from "./BitReader.js"
 
 // NAL
@@ -71,7 +78,7 @@ export interface RawNALU {
 /**
  * Parse outer layer of a NALU
  *
- * Note: Subarrays are returned. Before further parsing, [[decodeRBSP]] should be used.
+ * Note: Subarrays are returned. Before further parsing, {@link decodeRBSP} should be used.
  */
 export function parseNALU(nalu: Uint8Array) {
 	if (nalu.length < 1)
