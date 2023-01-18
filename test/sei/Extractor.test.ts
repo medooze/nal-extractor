@@ -10,6 +10,8 @@ describe('SEIExtractor', () => {
 		const extractor = new SEIExtractor({
 			enablePicTiming: true,
 		})
+		// make sure no errors are swallowed
+		; (extractor as any).handleErrors = (err: any) => { throw err }
 
 		const expectedMessages: (ReturnType<typeof parsePictureTiming> | false)[] = [
 			false,

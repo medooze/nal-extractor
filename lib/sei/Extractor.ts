@@ -13,6 +13,8 @@ import { parseUserDataUnregistered } from "./UserDataUnregistered.js"
 import { parsePictureTiming, parsePictureTimingOptionsFromSPS, PictureTimingParseOptions } from "./PictureTiming.js"
 
 export interface SEIExtractorOptions {
+	/** behavior on parsing errors. override `handleError` for finer control (default: log) */
+	errors?: 'throw' | 'log'
 	/** parse unregistered user data messages (default: true) */
 	enableUserDataUnregistered?: boolean
 	/** parse picture timing messages (default: false) */
@@ -25,8 +27,44 @@ export type SEIExtractedMessage =
 	{ type: SEIMessageType.USER_DATA_UNREGISTERED, uuid: bigint, data: Uint8Array } |
 	{ type: SEIMessageType.PIC_TIMING, message: ReturnType<typeof parsePictureTiming> }
 
+export class SEIExtractorError extends Error {
+	constructor(
+		/**
+		 * source of the error:
+		 *  - `psManager` (when `SetManager` was preprocessing a NALU),
+		 *  - `nalu` (when parsing the SEI NALU itself)
+		 *  - `message` (when parsing a SEI message)
+		 *  - `missingPs` (parsing failed due to missing SPS/PPS)
+		 *
+		 * unstable, treat with care.
+		 */
+		public context: 'psManager' | 'nalu' | 'message' | 'missingPs',
+		/** original error */
+		public cause: unknown,
+	) {
+		super(SEIExtractorError.formatMessage(context), { cause })
+		this.name = 'SEIExtractorError'
+	}
+
+	private static formatMessage(context: SEIExtractorError['context']): string {
+		return (
+			context === 'psManager' ? 'Error when processing parameter sets' :
+			context === 'nalu' ? 'Error when parsing SEI NALU' :
+			context === 'message' ? 'Error when parsing SEI message' :
+			context === 'missingPs' ? 'Parsing failed due to missing SPS/PPS' :
+			'Unknown parsing error'
+		)
+	}
+}
+
+const wrapError = (context: SEIExtractorError['context'], err: unknown) =>
+	(err && (err as Error).name === 'SEIExtractorError') ?
+		(err as SEIExtractorError) :
+		new SEIExtractorError(context, err)
+
 export default class SEIExtractor {
 	psManager = new SetManager()
+	mutePsErrors = true
 
 	constructor(public options: SEIExtractorOptions) {}
 
@@ -43,7 +81,13 @@ export default class SEIExtractor {
 			// the first slice NALU, we must do a first pass before actually
 			// parsing the SEI
 			for (const nalu of nalus) {
-				this.psManager.processNALU(nalu)
+				if (nalu.nal_unit_type === NALUType.SPS)
+					this.mutePsErrors = false
+				try {
+					this.psManager.processNALU(nalu)
+				} catch (err) {
+					this.handleError(wrapError('psManager', err))
+				}
 				const type = nalu.nal_unit_type
 				if (type === NALUType.SLICE_IDR || type === NALUType.SLICE_NON_IDR || type === NALUType.SLICE_PARTITION_A)
 					break // done
@@ -57,9 +101,21 @@ export default class SEIExtractor {
 				messages.push({ type, message: parsePictureTiming(data, this.derivePicTimingOptions()) })
 		}
 
+		const safeProcessMessage = (msg: RawSEIMessage) => {
+			try {
+				processMessage(msg)
+			} catch (err) {
+				this.handleError(wrapError('message', err))
+			}
+		}
+
 		for (const nalu of nalus) {
-			if (nalu.nal_unit_type === NALUType.SEI)
-				parseSEI(decodeRBSP(nalu.rbsp)).forEach(processMessage)
+			try {
+				if (nalu.nal_unit_type === NALUType.SEI)
+					parseSEI(decodeRBSP(nalu.rbsp)).forEach(safeProcessMessage)
+			} catch (err) {
+				this.handleError(wrapError('nalu', err))
+			}
 		}
 
 		return messages
@@ -67,10 +123,32 @@ export default class SEIExtractor {
 
 	protected derivePicTimingOptions(): PictureTimingParseOptions {
 		if (!this.psManager.currentSPS)
-			throw Error('cannot parse picture timing: no current SPS')
+			throw new SEIExtractorError('missingPs', 'cannot parse picture timing: no current SPS')
 		const options = parsePictureTimingOptionsFromSPS(this.psManager.currentSPS)
 		if (this.options.forceCpbDpbDelaysPresent)
 			options.CpbDpbDelaysPresentFlag = true
 		return options
+	}
+
+	/**
+	 * handle an error that occurred during parsing. the default implementation
+	 * formats an error message and, depending on `options.errors`, throws it
+	 * or `console.warn()`s it. the default implementation also silences errors
+	 * related to missing SPS/PPS until the first SPS is seen.
+	 */
+	protected handleError(err: SEIExtractorError): void {
+		// mute SPS/PPS related errors until we see the first SPS
+		if ((err.context === 'psManager' || err.context === 'missingPs') && this.mutePsErrors)
+			return
+
+		const behavior = this.options.errors ?? 'log'
+
+		if (behavior === 'log') {
+			console.warn(err.message + ':', err.cause)
+		} else if (behavior === 'throw') {
+			throw err
+		} else {
+			throw TypeError(`unknown error behavior ${behavior}`)
+		}
 	}
 }
