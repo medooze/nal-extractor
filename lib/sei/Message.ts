@@ -12,8 +12,10 @@ export function parseSEI(rbsp: Uint8Array): RawSEIMessage[] {
 	// position and doesn't have zero words, we just need to strip the trailing bits
 	if (rbsp.length === 0)
 		return []
-	if (rbsp[rbsp.length - 1] !== 0x80)
-		throw TypeError('invalid SEI RBSP -- not byte aligned')
+	// currently disabled to tolerate broken encoders (FIXME: add a 'strict' option,
+	// like `parsePictureTiming`, and allow controlling it from SEIExtractor for e.g. tests)
+	//if (rbsp[rbsp.length - 1] !== 0x80)
+	//	throw TypeError('invalid SEI RBSP -- not byte aligned')
 	const length = rbsp.length - 1
 
 	// parse SEI messages until left without data

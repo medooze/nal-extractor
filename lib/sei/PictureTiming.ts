@@ -25,6 +25,8 @@ export interface PictureTimingParseOptions {
 	dpb_output_delay_length_minus1?: number,
 	pic_struct_present_flag?: boolean,
 	time_offset_length?: number,
+	/** disable workarounds to tolerate broken encoders (default: false) */
+	strict?: boolean,
 }
 
 /**
@@ -32,6 +34,13 @@ export interface PictureTimingParseOptions {
  * from the active SPS.
  */
 export function parsePictureTiming(seiPayload: Uint8Array, options: PictureTimingParseOptions) {
+	// add one extra byte into the payload, to tolerate broken encoders
+	if (!options.strict) {
+		const n = new Uint8Array(seiPayload.length + 1)
+		n.set(seiPayload)
+		seiPayload = n
+	}
+
 	const reader = new BitReader(seiPayload)
 	const result = {
 		...(options.CpbDpbDelaysPresentFlag ? {
@@ -82,7 +91,9 @@ export function parsePictureTiming(seiPayload: Uint8Array, options: PictureTimin
 		result.time_offset = reader.read(options.time_offset_length || 0)
 		return result
 	}
-	validateSEITrailing(reader)
+
+	if (options.strict)
+		validateSEITrailing(reader)
 	return result
 }
 
