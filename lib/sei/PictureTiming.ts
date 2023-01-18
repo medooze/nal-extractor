@@ -29,11 +29,33 @@ export interface PictureTimingParseOptions {
 	strict?: boolean,
 }
 
+export interface PictureTimestamp { ct_type: number,
+	nuit_field_based_flag: boolean,
+	counting_type: number,
+	full_timestamp_flag: boolean,
+	discontinuity_flag: boolean,
+	cnt_dropped_flag: boolean,
+	n_frames: number,
+	seconds_value?: number,
+	minutes_value?: number,
+	hours_value?: number,
+	time_offset: number,
+}
+
+export interface PictureTiming {
+	// if `CpbDpbDelaysPresentFlag`...
+	cpb_removal_delay?: number,
+	dpb_output_delay?: number,
+	// if `pic_struct_present_flag`...
+	pic_struct?: number,
+	timestamps?: (PictureTimestamp | undefined)[],
+}
+
 /**
  * Parse SEI picture timing message, given the payload and variables required
  * from the active SPS.
  */
-export function parsePictureTiming(seiPayload: Uint8Array, options: PictureTimingParseOptions) {
+export function parsePictureTiming(seiPayload: Uint8Array, options: PictureTimingParseOptions): PictureTiming {
 	// add one extra byte into the payload, to tolerate broken encoders
 	if (!options.strict) {
 		const n = new Uint8Array(seiPayload.length + 1)
@@ -60,7 +82,7 @@ export function parsePictureTiming(seiPayload: Uint8Array, options: PictureTimin
 	function parseTimestamp() {
 		if (!reader.read1())
 			return undefined
-		let result = {
+		let result: PictureTimestamp = {
 			ct_type: reader.read(2),
 			nuit_field_based_flag: reader.read1(),
 			counting_type: reader.read(5),
@@ -68,9 +90,6 @@ export function parsePictureTiming(seiPayload: Uint8Array, options: PictureTimin
 			discontinuity_flag: reader.read1(),
 			cnt_dropped_flag: reader.read1(),
 			n_frames: reader.read(8),
-			seconds_value: undefined as (undefined | number),
-			minutes_value: undefined as (undefined | number),
-			hours_value: undefined as (undefined | number),
 			time_offset: 0,
 		}
 		if (result.full_timestamp_flag) {

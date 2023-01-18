@@ -66,13 +66,18 @@ export default class SEIExtractor {
 	psManager = new SetManager()
 	mutePsErrors = true
 
-	constructor(public options: SEIExtractorOptions) {}
+	constructor(public options: SEIExtractorOptions = {}) {}
 
 	/**
 	 * Process the next AU, in decoding order, and return the extracted messages.
 	 */
-	processAU(data: Uint8Array) {
-		const nalus = sliceNALUs(data).map(parseNALU)
+	processAU(
+		/** AU data, in Annex B byte stream format */
+		data: Uint8Array | ArrayBuffer
+	) {
+		const bytes = ArrayBuffer.isView(data) ? data : new Uint8Array(data)
+
+		const nalus = sliceNALUs(bytes).map(parseNALU)
 		const messages: SEIExtractedMessage[] = []
 
 		if (this.options.enablePicTiming) {
