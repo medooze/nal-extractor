@@ -20,6 +20,10 @@
  * transformer. It is okay to pass a worker that hasn't yet started up, as
  * long as {@link startRtpScriptTransformService} is called in the initialization.
  *
+ * In addition to using these APIs, in case the old Encoded Transform APIs are
+ * used, you need to pass `encodedInsertableStreams: true` in the configuration
+ * object when creating the `RTCPeerConnection`.
+ *
  * Basic example:
  *
  * ~~~ js
@@ -30,9 +34,13 @@
  * // in this example we use a single worker for all processing for simplicity
  * const rtcTransformWorker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' })
  *
- * // TODO: establish WebRTC connection
+ * const peerConnection = new RTCPeerConnection({
+ *   // needed in case the old API is used
+ *   encodedInsertableStreams: true,
+ * })
+ * // TODO: establish connection with other peer and negotiate content
  *
- * function onNegotiationDone(peerConnection) {
+ * function onNegotiationDone() {
  *   // attach filters to every receiver:
  *   for (const transceiver of peerConnection.getTransceivers()) {
  *     const options = { mid: transceiver.mid } // custom data to send with the created transformer
@@ -195,6 +203,9 @@ export interface AttachRtpScriptTransformOptions<O> {
 /**
  * Local side of the API: Creates a new script transform, and attaches it to
  * the passed RTP sender or received.
+ *
+ * Make sure to pass `encodedInsertableStreams: true` in the configuration
+ * when creating the `RTCPeerConnection`.
  *
  * See module description for detailed instructions.
  */
