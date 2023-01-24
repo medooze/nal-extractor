@@ -320,7 +320,7 @@ let nextId = 0
  * @returns Stop / deregister callback, wrapped in a promise that resolves
  * when the transformer is fully set up.
  */
-export function attachMetadataExtractor<O=unknown, Meta=unknown>(
+export function attachMetadataExtractor<Meta=unknown, O=unknown>(
 	/**
 	 * part of the RTP transceiver to attach the transform
 	 * at (either the RTPRtcSender, or the RTPRtcReceiver).
@@ -379,7 +379,7 @@ type ExtractionFunction<Meta> = (frame: unknown) => MessageData<Meta> | undefine
  *
  * @returns Callback to stop / deregister the service.
  */
- export function startMetadataExtractorService<O=unknown, Meta=unknown>(
+ export function startMetadataExtractorService<Meta=unknown, O=unknown>(
 	/**
 	 * callback to invoke when a transformer is received by this worker.
 	 * the callback should return an 'extraction function'.

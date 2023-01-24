@@ -67,7 +67,7 @@ type WrappedMeta<Meta> = { ts: number, metadata: Meta }
  *
  * Most use cases should be able to use this helper instead of the individual parts.
  */
-export abstract class MetadataSync<TMeta, O=unknown, Meta=unknown> {
+export abstract class MetadataSync<TMeta, Meta=unknown, O=unknown> {
 	private cleanup?: () => void
 
 	/** stop / deregister */
@@ -147,13 +147,13 @@ export abstract class MetadataSync<TMeta, O=unknown, Meta=unknown> {
 }
 
 /** variant of {@link sync/RtpScriptTransform.startMetadataExtractorService} to be paired with {@link MetadataSync} */
-export function startMetadataSyncService<O=unknown, Meta=unknown>(
+export function startMetadataSyncService<Meta=unknown, O=unknown>(
 	/** see {@link sync/RtpScriptTransform.startMetadataExtractorService} */
 	callback: RtpScriptTransformServiceCallback<O, (frame: RTCEncodedVideoFrame) => (MessageData<Meta> | undefined)>,
 	/** see {@link sync/RtpScriptTransform.startMetadataExtractorService} */
-	options: Parameters<typeof startMetadataExtractorService<O, Meta>>[1] = {},
+	options: Parameters<typeof startMetadataExtractorService<Meta, O>>[1] = {},
 ): () => void {
-	return startMetadataExtractorService<O, WrappedMeta<Meta>>((...args) => {
+	return startMetadataExtractorService<WrappedMeta<Meta>, O>((...args) => {
 		const extract = callback(...args)
 		return chunk => {
 			const frame = chunk as RTCEncodedVideoFrame
@@ -167,7 +167,7 @@ export function startMetadataSyncService<O=unknown, Meta=unknown>(
 }
 
 /** convenience specialization of MetadataSync that doesn't transform the metadata */
-export class SimpleMetadataSync<O=unknown, Meta=unknown> extends MetadataSync<Meta, O, Meta> {
+export class SimpleMetadataSync<Meta=unknown, O=unknown> extends MetadataSync<Meta, Meta, O> {
 	transformMetadata(metadata: Meta) {
 		return metadata
 	}
