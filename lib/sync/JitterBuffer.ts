@@ -14,7 +14,7 @@ class InnerJitterBuffer<T> {
 	queue: [number, T][]
 
 	// TODO: replace with an actual jitterbuffer...
-	constructor(firstPts: number, firstData: T, queueSize: number) {
+	constructor(firstPts: number, firstData: T, _queueSize: number) {
 		this.lastPts = firstPts
 		this.queue = [ [firstPts, firstData] ]
 	}
@@ -129,7 +129,7 @@ export abstract class MetadataSync<TMeta, Meta=unknown, O=unknown> {
 	 *
 	 * this method can be overriden to gather stats.
 	 */
-	newFrame(now: number, frameMetadata: VideoFrameCallbackMetadata) {
+	newFrame(_now: number, frameMetadata: VideoFrameCallbackMetadata) {
 		const timestamp = frameMetadata.rtpTimestamp
 		if (timestamp === undefined)
 			throw new Error('RTP timestamp not present; is video playing a WebRTC stream?')

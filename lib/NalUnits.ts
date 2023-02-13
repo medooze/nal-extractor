@@ -5,7 +5,7 @@
  * @module
  */
 
-import BitReader from "./BitReader.js"
+import type BitReader from "./BitReader.js"
 
 // NAL
 // ---

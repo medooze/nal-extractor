@@ -1,5 +1,5 @@
 import BitReader from "../BitReader.js"
-import { SPS } from "../SPS.js"
+import type { SPS } from "../SPS.js"
 import { validateSEITrailing } from "./Message.js"
 
 // PICTURE TIMING SEI

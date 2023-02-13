@@ -41,7 +41,7 @@ export class SEIExtractorError extends Error {
 		 */
 		public context: 'byteStream' | 'psManager' | 'nalu' | 'message' | 'missingPs',
 		/** original error */
-		public cause: unknown,
+		public override cause: unknown,
 	) {
 		super(SEIExtractorError.formatMessage(context), { cause })
 		this.name = 'SEIExtractorError'
