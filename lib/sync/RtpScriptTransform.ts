@@ -31,7 +31,7 @@
  * ~~~ js
  * // main.js
  *
- * import { attachRtpScriptTransform } from 'h264-frame-parser'
+ * import { attachRtpScriptTransform } from 'nal-extractor'
  *
  * // in this example we use a single worker for all processing for simplicity
  * const rtcTransformWorker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' })
@@ -54,7 +54,7 @@
  * ~~~ js
  * // worker.js
  *
- * import { startRtpScriptTransformService } from 'h264-frame-parser'
+ * import { startRtpScriptTransformService } from 'nal-extractor'
  *
  * startRtpScriptTransformService((transformer, options) => {
  *   console.log('Received a transformer for MID:', options.mid)
