@@ -1,4 +1,4 @@
-import { describe, expect, it } from "@jest/globals"
+import { describe, expect, it } from "vitest"
 import { decodeRBSP, NALUType, parseNALU } from "../lib/NalUnits.js"
 import { parsePPS, PPS, validatePPSId } from "../lib/PPS.js"
 
