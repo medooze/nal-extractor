@@ -1,3 +1,5 @@
+/// <reference lib="dom" />
+
 /**
  * Helpers to manage the resolution of canvas elements.
  *

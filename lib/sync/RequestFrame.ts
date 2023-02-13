@@ -1,3 +1,5 @@
+/// <reference lib="dom" />
+
 /**
  * Helpers for `requestVideoFrameCallback` and `requestAnimationFrame` that
  * take care of managing handles and coalescing multiple requests.

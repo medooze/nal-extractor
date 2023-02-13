@@ -1,3 +1,5 @@
+/// <reference lib="dom" />
+
 /**
  * Provides a uniform API for both versions of WebRTC Insertable Streams,
  * now officially called WebRTC Encoded Transform.
