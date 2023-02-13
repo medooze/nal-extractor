@@ -20,3 +20,5 @@ export * from "./CanvasResolution.js"
 export * from "./RequestFrame.js"
 
 export * from "./RtpScriptTransform.js"
+
+export * from "./MetadataSync.js"

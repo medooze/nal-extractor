@@ -389,7 +389,7 @@ type ExtractionFunction<Meta> = (frame: unknown) => MessageData<Meta> | undefine
  *
  * @returns Callback to stop / deregister the service.
  */
- export function startMetadataExtractorService<Meta=unknown, O=unknown>(
+export function startMetadataExtractorService<Meta=unknown, O=unknown>(
 	/**
 	 * callback to invoke when a transformer is received by this worker.
 	 * the callback should return an 'extraction function'.
