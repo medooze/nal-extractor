@@ -116,7 +116,17 @@ export function decodeRBSP(
 /**
  * Slice the NALUs present in the supplied buffer, assuming it is already byte-aligned
  */
-export function sliceNALUs(stream: Uint8Array): Uint8Array[] {
+export function sliceNALUs(
+	stream: Uint8Array,
+	options: {
+		/**
+		 * if true, the returned array contains the leading chunk of data before the
+		 * first start code (possibly empty). if false, an error is thrown if this
+		 * chunk is empty (default: false)
+		 */
+		includeLeading?: boolean,
+	} = {},
+): Uint8Array[] {
 	const result = []
 	let start = 0, pos = 0, searchLength = stream.length - 2
 	while (pos < searchLength) {
@@ -130,8 +140,9 @@ export function sliceNALUs(stream: Uint8Array): Uint8Array[] {
 		while (end > start && stream[end-1] === 0)
 			end--
 		// save current NALU
-		if (start === 0) {
-			if (end !== start) throw TypeError('byte stream contains leading data')
+		if (start === 0 && !options.includeLeading) {
+			if (end !== start)
+				throw Error(`byte stream contains ${end} bytes of leading data`)
 		} else {
 			result.push(stream.subarray(start, end))
 		}
