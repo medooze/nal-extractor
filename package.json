@@ -1,5 +1,5 @@
 {
-  "name": "h264-frame-parser",
+  "name": "nal-extractor",
   "version": "0.0.0",
   "keywords": [
     "h264",
@@ -8,7 +8,7 @@
     "metadata",
     "sync"
   ],
-  "description": "H.264 bitstream parsing + metadata sync helpers",
+  "description": "Extraction / display of metadata in an H.264 video stream",
   "type": "module",
   "main": "./dist/cjs/index.js",
   "module": "./dist/index.js",
@@ -26,7 +26,8 @@
   },
   "scripts": {
     "docs": "typedoc lib/**.ts lib/*/*.ts --out docs",
-    "prepare": "rm -rf dist; tsc",
+    "clean": "rm -rf dist",
+    "prepare": "npm run clean && npm run build",
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc",
     "build:cjs": "tsc --module commonjs --outDir dist/cjs && echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json",

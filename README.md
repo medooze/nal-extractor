@@ -1,4 +1,4 @@
-# h264-frame-parser
+# nal-extractor
 
 JS library to parse H.264 NALUs, with a focus on SEI messages.
 Also provides utilities to synchronize display of the extracted metadata.
