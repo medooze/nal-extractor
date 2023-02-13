@@ -4,7 +4,7 @@
  * @module
  */
 
-import { parseNALU, sliceNALUs, NALUType, decodeRBSP } from "../NalUnits.js"
+import { parseNALU, sliceNALUs, NALUType, decodeRBSP, RawNALU } from "../NalUnits.js"
 import SetManager from "../SetManager.js"
 
 import { SEIMessageType } from "./MessageType.js"
@@ -31,6 +31,7 @@ export class SEIExtractorError extends Error {
 	constructor(
 		/**
 		 * source of the error:
+		 *  - `byteStream` (when slicing/parsing NALUs from the byte stream)
 		 *  - `psManager` (when `SetManager` was preprocessing a NALU),
 		 *  - `nalu` (when parsing the SEI NALU itself)
 		 *  - `message` (when parsing a SEI message)
@@ -38,7 +39,7 @@ export class SEIExtractorError extends Error {
 		 *
 		 * unstable, treat with care.
 		 */
-		public context: 'psManager' | 'nalu' | 'message' | 'missingPs',
+		public context: 'byteStream' | 'psManager' | 'nalu' | 'message' | 'missingPs',
 		/** original error */
 		public cause: unknown,
 	) {
@@ -77,7 +78,19 @@ export default class SEIExtractor {
 	) {
 		const bytes = ArrayBuffer.isView(data) ? data : new Uint8Array(data)
 
-		const nalus = sliceNALUs(bytes).map(parseNALU)
+		// slice / parse NALUs from the byte stream
+		const [leading, ...raw_nalus] = sliceNALUs(bytes, { includeLeading: true })
+		if (leading.length)
+			this.handleError(wrapError('byteStream', new Error(`${leading.length} bytes of leading data in AU`)))
+		const nalus: RawNALU[] = []
+		for (const raw_nalu of raw_nalus) {
+			try {
+				nalus.push(parseNALU(raw_nalu))
+			} catch (err) {
+				this.handleError(wrapError('byteStream', err))
+			}
+		}
+
 		const messages: SEIExtractedMessage[] = []
 
 		if (this.options.enablePicTiming) {
@@ -114,6 +127,7 @@ export default class SEIExtractor {
 			}
 		}
 
+		// process SEI NALUs
 		for (const nalu of nalus) {
 			try {
 				if (nalu.nal_unit_type === NALUType.SEI)
