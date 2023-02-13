@@ -61,6 +61,14 @@
  * })
  * ~~~
  *
+ * ### API availability
+ *
+ * You can use {@link isEncodedStreamSupported} to test for availability of either
+ * of the API versions supported by this method. If it succeeds, you may call
+ * {@link attachRtpScriptTransform}. This is not required for the service side;
+ * there's no problem in starting up a worker and calling
+ * {@link startRtpScriptTransformService} even if the API is not available.
+ *
  * ### Considerations
  *
  * Note that {@link attachRtpScriptTransform} is synchronous and doesn't wait for
