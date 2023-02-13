@@ -10,11 +10,26 @@
   ],
   "description": "H.264 bitstream parsing + metadata sync helpers",
   "type": "module",
-  "main": "dist/index.js",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    }
+  },
   "scripts": {
     "docs": "typedoc lib/**.ts lib/*/*.ts --out docs",
     "prepare": "rm -rf dist; tsc",
-    "build": "tsc",
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs && echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json",
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watch"
   },
@@ -22,6 +37,9 @@
     "dist",
     "lib"
   ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/medooze/h264-frame-parser.git"
