@@ -1,3 +1,4 @@
+import { describe, expect, it } from "@jest/globals"
 import BitReader from "../lib/BitReader.js"
 
 describe('BitReader', () => {
