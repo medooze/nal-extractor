@@ -1,7 +1,7 @@
-import { describe, expect, it } from "@jest/globals"
+import { describe, expect, it } from "vitest"
 import { readFileSync } from "node:fs"
 import { join } from "node:path"
-import { parsePictureTiming, PicStruct, SEIExtractor, SEIMessageType } from "../../lib"
+import { parsePictureTiming, PicStruct, SEIExtractor, SEIMessageType } from "../../lib/index.js"
 
 const readSample = (x: string) =>
 	readFileSync(join(__dirname, '..', 'samples', x))

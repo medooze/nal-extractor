@@ -1,6 +1,6 @@
-import { describe, expect, it } from "@jest/globals"
-import { decodeRBSP, NALUType, parseNALU, parseSEI, parseUuid, SEIMessageType } from "../../lib"
-import { parseUserDataUnregistered } from "../../lib/sei/UserDataUnregistered"
+import { describe, expect, it } from "vitest"
+import { decodeRBSP, NALUType, parseNALU, parseSEI, parseUuid, SEIMessageType } from "../../lib/index.js"
+import { parseUserDataUnregistered } from "../../lib/sei/UserDataUnregistered.js"
 
 const x264optionsUuid = parseUuid('dc45e9bd-e6d9-48b7-962c-d820d923eeef')
 
