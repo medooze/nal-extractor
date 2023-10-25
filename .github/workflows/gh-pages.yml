@@ -33,9 +33,9 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Build docs
-        run: npm run docs && mkdir _site && mv docs _site/main && echo '<html><head><meta http-equiv="refresh" content="0; url=main/"></head><body></body></html>' > _site/index.html
+        run: npm run docs && mkdir _site && touch _site/.nojekyll && mv docs _site/main && echo '<html><head><meta http-equiv="refresh" content="0; url=main/"></head><body></body></html>' > _site/index.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
 
