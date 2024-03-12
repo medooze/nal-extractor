@@ -8,5 +8,5 @@ export function parseUserDataUnregistered(seiPayload: Uint8Array) {
 	const dv = new DataView(seiPayload.buffer, seiPayload.byteOffset)
 	const uuid = dv.getBigUint64(0) << 64n | dv.getBigUint64(8)
 	// we know this particular SEI message is byte aligned, so nothing to trim. rest is payload
-	return { uuid, data: seiPayload.subarray(16) }
+	return { uuid, data: seiPayload.subarray(16), raw: seiPayload }
 }

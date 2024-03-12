@@ -41,7 +41,7 @@ export function parseSEI(rbsp: Uint8Array): RawSEIMessage[] {
 			if (byte !== 0xFF) break
 		}
 		// consume message payload & add to list
-		if (position + payloadSize > length)
+		if (position + payloadSize > length + 1)
 			throw TypeError('EOF while reading payload')
 		result.push([ payloadType, rbsp.subarray(position, position + payloadSize) ])
 		position += payloadSize
